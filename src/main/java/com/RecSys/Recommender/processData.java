@@ -11,6 +11,14 @@ public class processData {
 
 	public static void reduceDataset () throws Exception {
 
+		/* to create a dataset that contains every xth session 
+			--> change string reduced file name
+			--> change line 37 (if counter != x)
+			--> change line 45 (if counter == x)
+		
+		
+		*/
+		
 		String clickFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-clicks.dat";
 		String reducedFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\reduced10th.dat";
 		String lastSession = ""; 
