@@ -3,9 +3,12 @@ package com.RecSys.Recommender;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class processData {
 
@@ -22,6 +25,8 @@ public class processData {
 		String clickFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-clicks.dat";
 		String reducedFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\reduced10th.dat";
 		String lastSession = ""; 
+		
+		
 		int counter=0; 
 
 		FileInputStream clickFile= new FileInputStream(new File(clickFileName));
@@ -53,7 +58,25 @@ public class processData {
 		reducedFile.close();
 		
 	}
+	public static void convertFrom2dArrayToFile(String [][] arrayFile, String fileName) throws Exception
+	{
+		String startDir = System.getProperty("user.dir");
+		
+		
+		String sortedFileName=startDir+"\\data\\YooChoose Dataset\\Sorted " + fileName.split("\\\\")[fileName.split("\\\\").length-1];
+
+		PrintWriter sortedFile= new PrintWriter (sortedFileName);
+
+
+		for (int i=0;i<arrayFile.length;i++)
+		{
+		   sortedFile.println(arrayFile[i][0]+","+arrayFile[i][1]+","+arrayFile[i][2]+"," +arrayFile[i][3]);
+		   
+		}
+
+		sortedFile.close();
 	
+	}
 	public static void aggregateBuys () throws Exception {
 		
 	  String buyFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-buys.dat";
@@ -119,6 +142,80 @@ public class processData {
 		  brClick.close();
 		}
 	
+	public static void sortFile (String fileName)throws Exception
+	{
+		
+		String[][] arrayFile=ConvertFileTo2dArray(fileName);
+		arrayFile=sort2dArray(arrayFile);
+		convertFrom2dArrayToFile(arrayFile, fileName);
+		
+		
+		
+	}
+	public static String[][] ConvertFileTo2dArray(String filePath) throws Exception
+	{
+		
+		int noOfRows=getNoOfRows(filePath);
+		String [][] arrayFile=new String[noOfRows][4];
+    	
+	    
+    	
+		  FileInputStream file= new FileInputStream(new File(filePath));
+		  BufferedReader brFile = new BufferedReader(new InputStreamReader(file));
+		  String line=brFile.readLine();
+		  
+		  int arrayLine=0;
+		  
+		  
+		 while (line!=null)
+			 
+		 {
+			 arrayFile[arrayLine]=line.split(",");
+			 
+			 line=brFile.readLine();
+		
+			 arrayLine++;
+			 
+		 }
+		 
+		 
+		 
+		 
+		 
+		 return arrayFile;
+		 
+	}
+	public static int getNoOfRows(String fileName) throws Exception
+	{
+		  FileInputStream file= new FileInputStream(new File(fileName));
+		  BufferedReader brFile = new BufferedReader(new InputStreamReader(file));
+		  String line=brFile.readLine();
+		  
+		  int lineCounter=0;
+		  
+		  while(line!=null)
+		  {
+			  lineCounter+=1;
+			  
+			 line= brFile.readLine();
+			  
+			  
+		  }
+		  return lineCounter;
+	}
+	public static String [][] sort2dArray(String [][] file){
+	 Arrays.sort(file, new Comparator<String[]>() {
+		 public int compare(String[] array1, String[] array2) {
+			  int x = Integer.valueOf(array1[0]);
+		        int j = Integer.valueOf(array2[0]);
+		        return Integer.compare(x, j);
+		    }
+	    });
+	
+
+	return file;
+	
+	}
 	
 	public static void joinDatasets() throws Exception{
 			

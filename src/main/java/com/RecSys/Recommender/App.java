@@ -1,7 +1,6 @@
 package com.RecSys.Recommender;
 
 import java.io.*;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -125,14 +124,22 @@ public class App
 
     public static void main( String[] args ) throws Exception
     {
-    
+    	
+    	String startDir = System.getProperty("user.dir");
+    	
+    	String reducedClicksFileName= startDir+"\\data\\YooChoose Dataset\\reduced10000th.dat";
+     
+    	
+    	processData.sortFile(reducedClicksFileName);
+    	
+
 //    	processData.aggregateBuys();
     	
 //    	processData.reduceDataset();
     	
 //    	processData.aggregateClicks();
     	
-    	processData.joinDatasets();
+//    	processData.joinDatasets();
     	
 //   	getIntersectionClickBuySession();
     	
