@@ -58,7 +58,7 @@ public class processData {
 		reducedFile.close();
 		
 	}
-	public static void convertFrom2dArrayToFile(String [][] arrayFile, String fileName) throws Exception
+	public static String convertFrom2dArrayToFile(String [][] arrayFile, String fileName) throws Exception
 	{
 		String startDir = System.getProperty("user.dir");
 		
@@ -75,7 +75,7 @@ public class processData {
 		}
 
 		sortedFile.close();
-	
+	return sortedFileName;
 	}
 	public static void aggregateBuys () throws Exception {
 		
@@ -142,14 +142,14 @@ public class processData {
 		  brClick.close();
 		}
 	
-	public static void sortFile (String fileName)throws Exception
+	public static String  sortFile (String fileName)throws Exception
 	{
 		
 		String[][] arrayFile=ConvertFileTo2dArray(fileName);
 		arrayFile=sort2dArray(arrayFile);
-		convertFrom2dArrayToFile(arrayFile, fileName);
+		return  convertFrom2dArrayToFile(arrayFile, fileName);
 		
-		
+		 
 		
 	}
 	public static String[][] ConvertFileTo2dArray(String filePath) throws Exception
@@ -217,12 +217,13 @@ public class processData {
 	
 	}
 	
-	public static void joinDatasets() throws Exception{
+	public static void joinDatasets(String buyFileName,String clickFileName) throws Exception{
 			
 		
-		  String buyFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\aggregatedBuysNOTIME.dat";
-		  String clickFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\\\ProcessedDatasets\\aggregatedClicks10000thNOTIME.dat";
-		  String mergedFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\merged10000th.dat";
+//		  String buyFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\aggregatedBuysNOTIME.dat";
+//		  String clickFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\\\ProcessedDatasets\\aggregatedClicks10000thNOTIME.dat";
+		String startDir = System.getProperty("user.dir");
+		  String mergedFileName = startDir+ "\\data\\YooChoose Dataset\\merged10000th.dat";
 		  
 		  FileReader clickFile = new FileReader(new File(clickFileName));
 		  BufferedReader brClick = new BufferedReader(clickFile);

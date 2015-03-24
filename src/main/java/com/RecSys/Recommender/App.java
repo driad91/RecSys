@@ -127,11 +127,15 @@ public class App
     	
     	String startDir = System.getProperty("user.dir");
     	
-    	String reducedClicksFileName= startDir+"\\data\\YooChoose Dataset\\reduced10000th.dat";
-     
+    	String aggregatedClicksFileName= startDir+"\\data\\YooChoose Dataset\\aggregatedClicks10000thNOTIME.dat";
+    	String aggregatedBuysFileName=startDir+"\\data\\YooChoose Dataset\\aggregatedBuysNOTIME.dat";
     	
-    	processData.sortFile(reducedClicksFileName);
     	
+    	String sortedClicksFileName=processData.sortFile(aggregatedClicksFileName);
+    	String sortedBuysFileName=processData.sortFile(aggregatedBuysFileName);
+    	processData.joinDatasets(sortedBuysFileName, sortedClicksFileName);
+   System.out.println(startDir);
+   
 
 //    	processData.aggregateBuys();
     	
