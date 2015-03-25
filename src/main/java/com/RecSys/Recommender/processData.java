@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class processData {
-
+ static 	String startDir = System.getProperty("user.dir");
 	public static void reduceDataset () throws Exception {
 
 		/* to create a dataset that contains every xth session 
@@ -217,6 +217,107 @@ public class processData {
 	
 	}
 	
+	public static int [][] getTotalClicksAndBuysForEachSession(String mergedFileName) throws Exception
+	{
+		
+		int noOfRows=getNoOfRows(mergedFileName);
+		int[][]totalClicksAndBuys=new int[noOfRows][6];
+		  FileInputStream file= new FileInputStream(new File(mergedFileName));
+		  BufferedReader brFile = new BufferedReader(new InputStreamReader(file));
+		  String line=brFile.readLine();
+		  
+		 int sessionID=0;
+		 int counter=0;
+		 
+		  
+		 while (line!=null)
+		 {
+			String arrayLine[]=line.split(",");
+			 if (Integer.parseInt(arrayLine[0])==sessionID)
+			 {
+				 
+				 totalClicksAndBuys[counter][1]+=Integer.parseInt(arrayLine[3])+(Integer.parseInt(arrayLine[5])*2);
+				 
+			 }
+			 
+			 else if (counter!=0)
+			 {
+				 counter++;
+				 totalClicksAndBuys[counter][0]=Integer.parseInt(arrayLine[0]);
+				 totalClicksAndBuys[counter][1]=Integer.parseInt(arrayLine[3])+(Integer.parseInt(arrayLine[5])*2);
+				 sessionID=totalClicksAndBuys[counter][0];
+				 
+				 
+			 }
+			 
+			 else if(counter==0)
+			 {
+				 totalClicksAndBuys[counter][0]=Integer.parseInt(arrayLine[0]);
+				 totalClicksAndBuys[counter][1]=Integer.parseInt(arrayLine[3])+(Integer.parseInt(arrayLine[5])*2);
+				 sessionID=totalClicksAndBuys[counter][0];
+				 
+				 counter++;
+				 
+			 }
+			 line=brFile.readLine();
+			 
+		 }
+		 
+	
+		brFile.close();
+		
+		return totalClicksAndBuys;
+		
+		
+	}
+	public static void convertToRatings(String mergedFileName) throws Exception
+	{
+		String [] arrayLine;
+		double rating;
+		
+		String ratedFileName= startDir+"\\data\\YooChoose Dataset\\Rated " + mergedFileName.split("\\\\")[mergedFileName.split("\\\\").length-1];
+
+		PrintWriter ratedFile= new PrintWriter (ratedFileName);
+		
+		  FileInputStream file= new FileInputStream(new File(mergedFileName));
+		  BufferedReader brFile = new BufferedReader(new InputStreamReader(file));
+		  String line=brFile.readLine();
+		  int[][]totalUserClicksAndBuys=getTotalClicksAndBuysForEachSession(mergedFileName);
+		  
+		 
+		  
+		 while (line!=null)
+			 
+		 {
+			 arrayLine=line.split(",");
+			 rating=Integer.parseInt(arrayLine[3])+(Integer.parseInt(arrayLine[5])*2);
+			 
+			 int counter=0;
+			 
+			 while(counter<totalUserClicksAndBuys.length && totalUserClicksAndBuys[counter]!=null)
+			 {
+				 
+				 if (Integer.parseInt(arrayLine[0])==totalUserClicksAndBuys[counter][0])
+						 
+						 {
+					 ratedFile.println(arrayLine[0]+"," + arrayLine[1]+","+ Math.round((rating/totalUserClicksAndBuys[counter][1])*5));
+					 
+					 
+				 }
+				
+				 counter++;
+			 }
+				 
+			
+			 
+			 line=brFile.readLine();
+		
+		
+			 
+		 }
+
+		
+	}
 	public static void joinDatasets(String buyFileName,String clickFileName) throws Exception{
 			
 		

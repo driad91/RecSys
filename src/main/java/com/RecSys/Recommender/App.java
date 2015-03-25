@@ -129,13 +129,18 @@ public class App
     	
     	String aggregatedClicksFileName= startDir+"\\data\\YooChoose Dataset\\aggregatedClicks10000thNOTIME.dat";
     	String aggregatedBuysFileName=startDir+"\\data\\YooChoose Dataset\\aggregatedBuysNOTIME.dat";
+    	  String mergedFileName = startDir+ "\\data\\YooChoose Dataset\\merged10000th.dat";
     	
-    	
-    	String sortedClicksFileName=processData.sortFile(aggregatedClicksFileName);
-    	String sortedBuysFileName=processData.sortFile(aggregatedBuysFileName);
-    	processData.joinDatasets(sortedBuysFileName, sortedClicksFileName);
-   System.out.println(startDir);
+//    	String sortedClicksFileName=processData.sortFile(aggregatedClicksFileName);
+//    	String sortedBuysFileName=processData.sortFile(aggregatedBuysFileName);
+//    	processData.joinDatasets(sortedBuysFileName, sortedClicksFileName);
+//   processData.convertToRatings(mergedFileName);
+//   
    
+    	
+    	
+    	
+    	
 
 //    	processData.aggregateBuys();
     	
@@ -146,16 +151,30 @@ public class App
 //    	processData.joinDatasets();
     	
 //   	getIntersectionClickBuySession();
+    	  
     	
-//    	DataModel model = new FileDataModel(new File("data/dataset.csv"));
-//    	UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-//    	UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
-//    	UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
-//    	
-//    	List<RecommendedItem> recommendations = recommender.recommend(2, 4);
-//    	for (RecommendedItem recommendation : recommendations) {
-//    	  System.out.println(recommendation);
-//    	}
+    	DataModel model = new FileDataModel(new File(startDir+"/Rated merged10000th.csv"));
+    	UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
+    	UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.2, similarity, model);
+    	UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
+    	FileInputStream ratedFile= new FileInputStream(new File(startDir+"\\Rated merged10000th.csv"));
+		  BufferedReader ratedFileReader = new BufferedReader(new InputStreamReader(ratedFile));
+		  
+		  String line=ratedFileReader.readLine();
+		  
+		  
+		  while(line!=null)
+		  {
+			  List<RecommendedItem> recommendations = recommender.recommend(Integer.parseInt(line.split(",")[0]), 1);
+				for (RecommendedItem recommendation : recommendations) {
+			    	  System.out.println("Recommendation for " +line.split(",")[0] +":"+  recommendation);
+			    	}
+				
+				line=ratedFileReader.readLine();
+		  }
+
+    	
+    
     	
     
     }
