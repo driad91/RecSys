@@ -21,121 +21,135 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
  * Hello world!
  *
  */
-public class App 
- { 
-	
-	
+public class App {
+
 	@SuppressWarnings("null")
-	public static void getIntersectionClickBuySession() throws Exception{
-		
-//		DataModel buysModel = new FileDataModel(new File("C:\\Users\\Daniel\\Desktop\\Yoochoose dataset\\yoochoose-buys.dat"));
-//		DataModel clicksModel = new FileDataModel(new File("C:\\Users\\Daniel\\Desktop\\Yoochoose dataset\\yoochoose-clicks.dat"));
-//	
-//		
-//		System.out.println(buysModel.getNumUsers());
-//	
-		
-		
-		  String buyFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-buys.dat";
-		  String clickFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-clicks.dat";
-		  String mergedFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\merged.dat";
-		  
-//		  
-//	        try {
-//	           
-//	        	File buyFile = new File(buyFileName);
-//				FileReader fileReader = new FileReader(buyFileName);
-//				BufferedReader bufferedReader = new BufferedReader(fileReader);
-//				StringBuffer stringBuffer = new StringBuffer();
-//				String buyLine;
-//				while ((buyLine = bufferedReader.readLine()) != null) {
-//					stringBuffer.append(buyLine);
-//					stringBuffer.append("\n");
-//				}
-//				
-//				File clickFile = new File(clickFileName);
-//				FileReader fileReaderTwo = new FileReader(clickFileName);
-//				BufferedReader bufferedReaderTwo = new BufferedReader(fileReaderTwo);
-//				StringBuffer stringBufferTwo = new StringBuffer();
-//				String clickLine;
-//				while ((clickLine = bufferedReaderTwo.readLine()) != null) {
-//					stringBufferTwo.append(clickLine);
-//					stringBufferTwo.append("\n");
-//				}
-//				
-//				@SuppressWarnings("null")
-//				String []buyFileLines = buyLine.split("\n");
-//				String []clickFileLines=clickLine.split("\n");
-//	            for   ( String line : buyFileLines) {
-//	                for(String clickLineTwo: clickFileLines){
-//	                	
-//	                	if (line.split(",")[0].equals((clickLineTwo.split(",")[0])))
-//	                	{
-//	                	System.out.println(line.split(",")[0] + line.split(",")[2]);
-//	 
-//	                	}
-//	                	
-//	                }
-//	                }
-//	            }
-//	         catch (IOException e) {
-//	           System.out.println(e.getMessage());
-//	           e.printStackTrace();
-//	        }
-		
-		
+	public static void getIntersectionClickBuySession() throws Exception {
 
-		  FileReader buyFile = new FileReader(new File(buyFileName));
-		  BufferedReader brBuy = new BufferedReader(buyFile);
-		  FileInputStream clickFile= new FileInputStream(new File(clickFileName));
-		  BufferedReader brClick = new BufferedReader(new InputStreamReader(clickFile));
+		// DataModel buysModel = new FileDataModel(new
+		// File("C:\\Users\\Daniel\\Desktop\\Yoochoose dataset\\yoochoose-buys.dat"));
+		// DataModel clicksModel = new FileDataModel(new
+		// File("C:\\Users\\Daniel\\Desktop\\Yoochoose dataset\\yoochoose-clicks.dat"));
+		//
+		//
+		// System.out.println(buysModel.getNumUsers());
+		//
 
-		  PrintWriter mergedFile = new PrintWriter (mergedFileName);
+		String buyFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-buys.dat";
+		String clickFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-clicks.dat";
+		String mergedFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\merged.dat";
 
-		  String tempBuy = brBuy.readLine();
-		  String tempClick = brClick.readLine();
+		//
+		// try {
+		//
+		// File buyFile = new File(buyFileName);
+		// FileReader fileReader = new FileReader(buyFileName);
+		// BufferedReader bufferedReader = new BufferedReader(fileReader);
+		// StringBuffer stringBuffer = new StringBuffer();
+		// String buyLine;
+		// while ((buyLine = bufferedReader.readLine()) != null) {
+		// stringBuffer.append(buyLine);
+		// stringBuffer.append("\n");
+		// }
+		//
+		// File clickFile = new File(clickFileName);
+		// FileReader fileReaderTwo = new FileReader(clickFileName);
+		// BufferedReader bufferedReaderTwo = new BufferedReader(fileReaderTwo);
+		// StringBuffer stringBufferTwo = new StringBuffer();
+		// String clickLine;
+		// while ((clickLine = bufferedReaderTwo.readLine()) != null) {
+		// stringBufferTwo.append(clickLine);
+		// stringBufferTwo.append("\n");
+		// }
+		//
+		// @SuppressWarnings("null")
+		// String []buyFileLines = buyLine.split("\n");
+		// String []clickFileLines=clickLine.split("\n");
+		// for ( String line : buyFileLines) {
+		// for(String clickLineTwo: clickFileLines){
+		//
+		// if (line.split(",")[0].equals((clickLineTwo.split(",")[0])))
+		// {
+		// System.out.println(line.split(",")[0] + line.split(",")[2]);
+		//
+		// }
+		//
+		// }
+		// }
+		// }
+		// catch (IOException e) {
+		// System.out.println(e.getMessage());
+		// e.printStackTrace();
+		// }
 
-		  while (tempBuy !=null) {
-			  String[] tempBuyArr=tempBuy.split(",");
-			  clickFile.getChannel().position(0);
-			  brClick = new BufferedReader(new InputStreamReader(clickFile));
-			  tempClick=brClick.readLine();
+		FileReader buyFile = new FileReader(new File(buyFileName));
+		BufferedReader brBuy = new BufferedReader(buyFile);
+		FileInputStream clickFile = new FileInputStream(new File(clickFileName));
+		BufferedReader brClick = new BufferedReader(new InputStreamReader(
+				clickFile));
 
-			  while (tempClick != null) {
-				  String[] tempClickArr=tempClick.split(",");						  
+		PrintWriter mergedFile = new PrintWriter(mergedFileName);
 
-				  if (tempClickArr[0].equals(tempBuyArr[0])) {		  
-					  System.out.println("SessionID = " + tempClickArr[0]  + " and Click ProductID = " +tempClickArr[2] + "and Buy Product ID" + tempBuyArr[2]);
-					  mergedFile.println(tempClickArr[0] + "," + tempClickArr[1] + "," + tempClickArr[2] + "," + tempClickArr[3] + ","
-							  + tempBuyArr[0] + "," + tempBuyArr[1] + "," + tempBuyArr[2] + "," + tempBuyArr[3] + "," + tempBuyArr[4]);  
-					  mergedFile.close();
-					  return;
-				  }
-				  tempClick=brClick.readLine();
-			  }
-//			  brClick.close();
-			  tempBuy = brBuy.readLine();
-		  }
-//		  brBuy.close();
+		String tempBuy = brBuy.readLine();
+		String tempClick = brClick.readLine();
+
+		while (tempBuy != null) {
+			String[] tempBuyArr = tempBuy.split(",");
+			clickFile.getChannel().position(0);
+			brClick = new BufferedReader(new InputStreamReader(clickFile));
+			tempClick = brClick.readLine();
+
+			while (tempClick != null) {
+				String[] tempClickArr = tempClick.split(",");
+
+				if (tempClickArr[0].equals(tempBuyArr[0])) {
+					System.out.println("SessionID = " + tempClickArr[0]
+							+ " and Click ProductID = " + tempClickArr[2]
+							+ "and Buy Product ID" + tempBuyArr[2]);
+					mergedFile.println(tempClickArr[0] + "," + tempClickArr[1]
+							+ "," + tempClickArr[2] + "," + tempClickArr[3]
+							+ "," + tempBuyArr[0] + "," + tempBuyArr[1] + ","
+							+ tempBuyArr[2] + "," + tempBuyArr[3] + ","
+							+ tempBuyArr[4]);
+					mergedFile.close();
+					return;
+				}
+				tempClick = brClick.readLine();
+			}
+			// brClick.close();
+			tempBuy = brBuy.readLine();
+		}
+		// brBuy.close();
 	}
 
-
-	
-
-    public static void main( String[] args ) throws Exception
+	public static void main( String[] args ) throws Exception
     {
     	
     	String startDir = System.getProperty("user.dir");
     	
-    	String aggregatedClicksFileName= startDir+"\\data\\YooChoose Dataset\\aggregatedClicks10000thNOTIME.dat";
-    	String aggregatedBuysFileName=startDir+"\\data\\YooChoose Dataset\\aggregatedBuysNOTIME.dat";
-    	  String mergedFileName = startDir+ "\\data\\YooChoose Dataset\\merged10000th.dat";
+    	
+    	
+    	String clicksFileName= startDir+"\\data\\YooChoose Dataset\\reduced10000th.dat";
+    	String buysFileName= startDir+"\\data\\YooChoose Dataset\\yoochoose-buys.dat";
+    	String sortedClicksFileName = startDir + "\\data\\YooChoose Dataset\\Sorted reduced10000th.dat";
+    	String sortedBuysFileName = startDir + "\\data\\YooChoose Dataset\\Sorted yoochoose-buys.dat";
+    	String aggregatedClicksFileName = startDir + "\\data\\YooChoose Dataset\\Sorted Aggregated reduced10000th NO TIME.dat"; 
+    	String aggregatedBuysFileName = startDir + "\\data\\YooChoose Dataset\\Sorted Aggregated buys NO TIME.dat";
+    	String mergedFileName = startDir+ "\\data\\YooChoose Dataset\\Sorted Aggregated merged10000th NO TIME.csv";
+    	
+//    	processData.sortFile(clicksFileName);
+//    	processData.sortFile(buysFileName);
+//    	processData.aggregateClicks(sortedClicksFileName, aggregatedClicksFileName);  
+//    	processData.aggregateBuys(sortedBuysFileName, aggregatedBuysFileName);  
+//    	processData.joinDatasets(aggregatedClicksFileName, aggregatedBuysFileName, mergedFileName);
+    	String ratedFileName = processData.convertToRatings(mergedFileName);
+    	
     	
 //    	String sortedClicksFileName=processData.sortFile(aggregatedClicksFileName);
 //    	String sortedBuysFileName=processData.sortFile(aggregatedBuysFileName);
 //    	processData.joinDatasets(sortedBuysFileName, sortedClicksFileName);
-//   processData.convertToRatings(mergedFileName);
-//   
+//   	processData.convertToRatings(mergedFileName);
+   
    
     	
     	
@@ -151,14 +165,15 @@ public class App
 //    	processData.joinDatasets();
     	
 //   	getIntersectionClickBuySession();
-    	  
+
+//    	  ---------------------------------
     	
-    	DataModel model = new FileDataModel(new File(startDir+"/Rated merged10000th.csv"));
+    	DataModel model = new FileDataModel(new File(ratedFileName));
     	UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
     	UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.2, similarity, model);
     	UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
-    	FileInputStream ratedFile= new FileInputStream(new File(startDir+"\\Rated merged10000th.csv"));
-		  BufferedReader ratedFileReader = new BufferedReader(new InputStreamReader(ratedFile));
+    	FileInputStream ratedFile= new FileInputStream(new File(ratedFileName));
+    	BufferedReader ratedFileReader = new BufferedReader(new InputStreamReader(ratedFile));
 		  
 		  String line=ratedFileReader.readLine();
 		  
@@ -172,10 +187,5 @@ public class App
 				
 				line=ratedFileReader.readLine();
 		  }
-
-    	
-    
-    	
-    
     }
 }

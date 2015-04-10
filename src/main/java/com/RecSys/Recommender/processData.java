@@ -10,6 +10,12 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * This class preprocesses the data from the competition
+ * @author robert and daniel
+ *
+ */
+
 public class processData {
  static 	String startDir = System.getProperty("user.dir");
 	public static void reduceDataset () throws Exception {
@@ -58,30 +64,15 @@ public class processData {
 		reducedFile.close();
 		
 	}
-	public static String convertFrom2dArrayToFile(String [][] arrayFile, String fileName) throws Exception
-	{
-		String startDir = System.getProperty("user.dir");
+	
+	/**
+	 * This method aggregates all records of the buys file that contain the same session id and same product id. This is why the timestamp is left out in the result
+	 * @param buyFileName The path of the buys file that should be aggregated
+	 * @param aggregatedFileName  The path of the file that should be created
+	 * @throws Exception 
+	 */
+	public static void aggregateBuys (String buyFileName, String aggregatedFileName) throws Exception {
 		
-		
-		String sortedFileName=startDir+"\\data\\YooChoose Dataset\\Sorted " + fileName.split("\\\\")[fileName.split("\\\\").length-1];
-
-		PrintWriter sortedFile= new PrintWriter (sortedFileName);
-
-
-		for (int i=0;i<arrayFile.length;i++)
-		{
-		   sortedFile.println(arrayFile[i][0]+","+arrayFile[i][1]+","+arrayFile[i][2]+"," +arrayFile[i][3]);
-		   
-		}
-
-		sortedFile.close();
-	return sortedFileName;
-	}
-	public static void aggregateBuys () throws Exception {
-		
-	  String buyFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-buys.dat";
-	  String aggregatedFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\aggregatedBuysNOTIME.dat";
-	  
 	  String[] tempBuyArrNow;
 	  String[] tempBuyArrLast;
 	  int counter = 0; 
@@ -109,12 +100,14 @@ public class processData {
 	  brBuy.close();
 	}
 
-	
-	public static void aggregateClicks () throws Exception {
-		
-		  String clickFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\reduced10000th.dat";
-		  String aggregatedFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\aggregatedClicks10000thNOTIME.dat";
-		  
+	/**
+	 * This method aggregates the clicks with same session id and same product id. Timestamp is left out in the result
+	 * @param clickFileName Path of the clicks file that should be aggregated
+	 * @param aggregatedFileName Path of the buys file that should be created 
+	 * @throws Exception
+	 */
+	public static void aggregateClicks (String clickFileName, String aggregatedFileName) throws Exception {
+			  
 		  String[] tempClickArrNow;
 		  String[] tempClickArrLast;
 		  int counter = 0; 
@@ -156,7 +149,7 @@ public class processData {
 	{
 		
 		int noOfRows=getNoOfRows(filePath);
-		String [][] arrayFile=new String[noOfRows][4];
+		String [][] arrayFile=new String[noOfRows][5];
     	
 	    
     	
@@ -203,20 +196,96 @@ public class processData {
 		  }
 		  return lineCounter;
 	}
+		
 	public static String [][] sort2dArray(String [][] file){
-	 Arrays.sort(file, new Comparator<String[]>() {
-		 public int compare(String[] array1, String[] array2) {
-			  int x = Integer.valueOf(array1[0]);
-		        int j = Integer.valueOf(array2[0]);
-		        return Integer.compare(x, j);
-		    }
-	    });
-	
+		 Arrays.sort(file, new Comparator<String[]>() {
+			 public int compare(String[] array1, String[] array2) {
+				  int x = Integer.valueOf(array1[0]);
+			        int j = Integer.valueOf(array2[0]);
+			        
+			        if (x==j)
+			        {
+			        	x=Integer.valueOf(array1[2]);
+			        	j=Integer.valueOf(array2[2]);
+			        	
+			   
+			        }
+			        return Integer.compare(x, j);
+			    }
+		    });
+		
 
-	return file;
+		return file;
+		
+		}
 	
+	public static String convertFrom2dArrayToFile(String [][] arrayFile, String fileName) throws Exception
+	{
+		String startDir = System.getProperty("user.dir");
+		
+		
+		String sortedFileName=startDir+"\\data\\YooChoose Dataset\\Sorted " + fileName.split("\\\\")[fileName.split("\\\\").length-1];
+	
+		PrintWriter sortedFile= new PrintWriter (sortedFileName);
+	
+	
+		for (int i=0;i<arrayFile.length;i++)
+		{
+		   sortedFile.println(arrayFile[i][0]+","+arrayFile[i][1]+","+arrayFile[i][2]+"," +arrayFile[i][3] + "," +arrayFile[i][4]);
+		   
+		}
+	
+		sortedFile.close();
+	return sortedFileName;
 	}
+	public static String convertToRatings(String mergedFileName) throws Exception
+	{
+		String [] arrayLine;
+		double rating;
+		
+		String ratedFileName= startDir+"\\data\\YooChoose Dataset\\Rated " + mergedFileName.split("\\\\")[mergedFileName.split("\\\\").length-1];
 	
+		PrintWriter ratedFile= new PrintWriter (ratedFileName);
+		
+		  FileInputStream file= new FileInputStream(new File(mergedFileName));
+		  BufferedReader brFile = new BufferedReader(new InputStreamReader(file));
+		  String line=brFile.readLine();
+		  int[][]totalUserClicksAndBuys=getTotalClicksAndBuysForEachSession(mergedFileName);
+		  
+		 
+		  
+		 while (line!=null)
+			 
+		 {
+			 arrayLine=line.split(",");
+//			 rating=Integer.parseInt(arrayLine[3])+(Integer.parseInt(arrayLine[5])*2);
+			 
+			 int counter=0;
+			 
+			 while(counter<totalUserClicksAndBuys.length && totalUserClicksAndBuys[counter]!=null)
+			 {
+				 
+				 if (Integer.parseInt(arrayLine[0])==totalUserClicksAndBuys[counter][0])
+						 
+						 {
+					 		ratedFile.println(arrayLine[0]+"," + 
+					 		arrayLine[1]+","+ 
+					 		(ratingAlgorithm.algorithm1(Integer.parseInt(arrayLine[3]), Integer.parseInt(arrayLine[5]), totalUserClicksAndBuys[counter][1])));
+				 }
+				
+				 counter++;
+			 }
+				 
+			
+			 
+			 line=brFile.readLine();
+		
+		
+			 
+		 }
+	return ratedFileName;
+		
+	}
 	public static int [][] getTotalClicksAndBuysForEachSession(String mergedFileName) throws Exception
 	{
 		
@@ -270,61 +339,21 @@ public class processData {
 		
 		
 	}
-	public static void convertToRatings(String mergedFileName) throws Exception
-	{
-		String [] arrayLine;
-		double rating;
-		
-		String ratedFileName= startDir+"\\data\\YooChoose Dataset\\Rated " + mergedFileName.split("\\\\")[mergedFileName.split("\\\\").length-1];
-
-		PrintWriter ratedFile= new PrintWriter (ratedFileName);
-		
-		  FileInputStream file= new FileInputStream(new File(mergedFileName));
-		  BufferedReader brFile = new BufferedReader(new InputStreamReader(file));
-		  String line=brFile.readLine();
-		  int[][]totalUserClicksAndBuys=getTotalClicksAndBuysForEachSession(mergedFileName);
-		  
-		 
-		  
-		 while (line!=null)
-			 
-		 {
-			 arrayLine=line.split(",");
-			 rating=Integer.parseInt(arrayLine[3])+(Integer.parseInt(arrayLine[5])*2);
-			 
-			 int counter=0;
-			 
-			 while(counter<totalUserClicksAndBuys.length && totalUserClicksAndBuys[counter]!=null)
-			 {
-				 
-				 if (Integer.parseInt(arrayLine[0])==totalUserClicksAndBuys[counter][0])
-						 
-						 {
-					 ratedFile.println(arrayLine[0]+"," + arrayLine[1]+","+ Math.round((rating/totalUserClicksAndBuys[counter][1])*5));
-					 
-					 
-				 }
-				
-				 counter++;
-			 }
-				 
-			
-			 
-			 line=brFile.readLine();
-		
-		
-			 
-		 }
-
-		
-	}
-	public static void joinDatasets(String buyFileName,String clickFileName) throws Exception{
+	
+	/**
+	 * This method joins a clicks file and a buys file. Both files have to be aggregated. 
+	 * @param clickFileName path of the clicks file
+	 * @param buyFileName path of the buys file
+	 * @param mergedFileName path of the merged file to be created
+	 * @throws Exception
+	 */
+	
+	public static void joinDatasets(String clickFileName,String buyFileName, String mergedFileName) throws Exception{
 			
 		
 //		  String buyFileName = "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\aggregatedBuysNOTIME.dat";
 //		  String clickFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\\\ProcessedDatasets\\aggregatedClicks10000thNOTIME.dat";
 		String startDir = System.getProperty("user.dir");
-		  String mergedFileName = startDir+ "\\data\\YooChoose Dataset\\merged10000th.dat";
 		  
 		  FileReader clickFile = new FileReader(new File(clickFileName));
 		  BufferedReader brClick = new BufferedReader(clickFile);
