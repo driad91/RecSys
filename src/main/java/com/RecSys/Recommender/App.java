@@ -140,13 +140,16 @@ public class App {
 				+ "\\data\\YooChoose Dataset\\Sorted Aggregated buys NO TIME.dat";
 		String mergedFileName = startDir
 				+ "\\data\\YooChoose Dataset\\Sorted Aggregated merged1000th NO TIME.csv";
-//		processData.reduceDataset(1000);
+		String ratedFileName =  startDir
+				+ "\\data\\YooChoose Dataset\\Rated Sorted Aggregated merged1000th NO TIME.csv";
+		
+		//		processData.reduceDataset(1000);
 //		 processData.sortFile(clicksFileName);
 //		 processData.sortFile(buysFileName);	
 //		 processData.aggregateClicks(sortedClicksFileName, aggregatedClicksFileName);
 		// processData.aggregateBuys(sortedBuysFileName, aggregatedBuysFileName);
 //		 processData.joinDatasets(aggregatedClicksFileName, aggregatedBuysFileName, mergedFileName);
-		 String ratedFileName = processData.convertToRatings(mergedFileName);
+//		processData.convertToRatings(mergedFileName);
 
 		// processData.aggregateBuys();
 
@@ -160,28 +163,28 @@ public class App {
 
 		// ---------------------------------
 
-		// DataModel model = new FileDataModel(new File(ratedFileName));
-		// UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-		// UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.2,
-		// similarity, model);
-		// UserBasedRecommender recommender = new GenericUserBasedRecommender(
-		// model, neighborhood, similarity);
-		// FileInputStream ratedFile = new FileInputStream(new
-		// File(ratedFileName));
-		// BufferedReader ratedFileReader = new BufferedReader(
-		// new InputStreamReader(ratedFile));
-		//
-		// String line = ratedFileReader.readLine();
-		//
-		// while (line != null) {
-		// List<RecommendedItem> recommendations = recommender.recommend(
-		// Integer.parseInt(line.split(",")[0]), 1);
-		// for (RecommendedItem recommendation : recommendations) {
-		// System.out.println("Recommendation for " + line.split(",")[0]
-		// + ":" + recommendation);
-		// }
-		//
-		// line = ratedFileReader.readLine();
-		// }
+		 DataModel model = new FileDataModel(new File(ratedFileName));
+		 UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
+		 UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.2,
+		 similarity, model);
+		 UserBasedRecommender recommender = new GenericUserBasedRecommender(
+		 model, neighborhood, similarity);
+		 FileInputStream ratedFile = new FileInputStream(new
+		 File(ratedFileName));
+		 BufferedReader ratedFileReader = new BufferedReader(
+		 new InputStreamReader(ratedFile));
+		
+		 String line = ratedFileReader.readLine();
+		
+		 while (line != null) {
+		 List<RecommendedItem> recommendations = recommender.recommend(
+		 Integer.parseInt(line.split(",")[0]), 1);
+		 for (RecommendedItem recommendation : recommendations) {
+		 System.out.println("Recommendation for " + line.split(",")[0]
+		 + ":" + recommendation);
+		 }
+		
+		 line = ratedFileReader.readLine();
+		 }
 	}
 }
