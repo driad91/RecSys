@@ -16,7 +16,7 @@ import java.util.Comparator;
  *
  */
 
-public class processData {
+public class ProcessData {
  static 	String startDir = System.getProperty("user.dir");
 
  /**
@@ -272,7 +272,7 @@ public class processData {
 						 {
 					 		ratedFile.println(arrayLine[0]+"," + 
 					 		arrayLine[1]+","+ 
-					 		(ratingAlgorithm.algorithm1(Integer.parseInt(arrayLine[3]), Integer.parseInt(arrayLine[5]), totalUserClicksAndBuys[counter][1])));
+					 		(RatingAlgorithm.algorithm1(Integer.parseInt(arrayLine[3]), Integer.parseInt(arrayLine[5]), totalUserClicksAndBuys[counter][1])));
 				 }
 				
 				 counter++;

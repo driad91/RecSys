@@ -1,6 +1,6 @@
 package com.RecSys.Recommender;
 
-class ratingAlgorithm {
+class RatingAlgorithm {
 
 	private static final int weightClicks = 1;
 	private static final int weightBuys = 5;
