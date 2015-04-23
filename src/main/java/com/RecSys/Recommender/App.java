@@ -122,70 +122,66 @@ public class App {
 		// brBuy.close();
 	}
 
-	public static void main( String[] args ) throws Exception
-    {
-    	
-    	String startDir = System.getProperty("user.dir");
-    	
-    	
-    	
-    	String clicksFileName= startDir+"\\data\\YooChoose Dataset\\reduced10000th.dat";
-    	String buysFileName= startDir+"\\data\\YooChoose Dataset\\yoochoose-buys.dat";
-    	String sortedClicksFileName = startDir + "\\data\\YooChoose Dataset\\Sorted reduced10000th.dat";
-    	String sortedBuysFileName = startDir + "\\data\\YooChoose Dataset\\Sorted yoochoose-buys.dat";
-    	String aggregatedClicksFileName = startDir + "\\data\\YooChoose Dataset\\Sorted Aggregated reduced10000th NO TIME.dat"; 
-    	String aggregatedBuysFileName = startDir + "\\data\\YooChoose Dataset\\Sorted Aggregated buys NO TIME.dat";
-    	String mergedFileName = startDir+ "\\data\\YooChoose Dataset\\Sorted Aggregated merged10000th NO TIME.csv";
-    	
-//    	processData.sortFile(clicksFileName);
-//    	processData.sortFile(buysFileName);
-//    	processData.aggregateClicks(sortedClicksFileName, aggregatedClicksFileName);  
-//    	processData.aggregateBuys(sortedBuysFileName, aggregatedBuysFileName);  
-//    	processData.joinDatasets(aggregatedClicksFileName, aggregatedBuysFileName, mergedFileName);
-    	String ratedFileName = processData.convertToRatings(mergedFileName);
-    	
-    	
-//    	String sortedClicksFileName=processData.sortFile(aggregatedClicksFileName);
-//    	String sortedBuysFileName=processData.sortFile(aggregatedBuysFileName);
-//    	processData.joinDatasets(sortedBuysFileName, sortedClicksFileName);
-//   	processData.convertToRatings(mergedFileName);
-   
-   
-    	
-    	
-    	
-    	
+	public static void main(String[] args) throws Exception {
 
-//    	processData.aggregateBuys();
-    	
-//    	processData.reduceDataset();
-    	
-//    	processData.aggregateClicks();
-    	
-//    	processData.joinDatasets();
-    	
-//   	getIntersectionClickBuySession();
+		String startDir = System.getProperty("user.dir");
 
-//    	  ---------------------------------
-    	
-    	DataModel model = new FileDataModel(new File(ratedFileName));
-    	UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-    	UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.2, similarity, model);
-    	UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
-    	FileInputStream ratedFile= new FileInputStream(new File(ratedFileName));
-    	BufferedReader ratedFileReader = new BufferedReader(new InputStreamReader(ratedFile));
-		  
-		  String line=ratedFileReader.readLine();
-		  
-		  
-		  while(line!=null)
-		  {
-			  List<RecommendedItem> recommendations = recommender.recommend(Integer.parseInt(line.split(",")[0]), 1);
-				for (RecommendedItem recommendation : recommendations) {
-			    	  System.out.println("Recommendation for " +line.split(",")[0] +":"+  recommendation);
-			    	}
-				
-				line=ratedFileReader.readLine();
-		  }
-    }
+		String clicksFileName = startDir
+				+ "\\data\\YooChoose Dataset\\reduced1000th.csv";
+		String buysFileName = startDir
+				+ "\\data\\YooChoose Dataset\\yoochoose-buys.dat";
+		String sortedClicksFileName = startDir
+				+ "\\data\\YooChoose Dataset\\Sorted reduced1000th.csv";
+		String sortedBuysFileName = startDir
+				+ "\\data\\YooChoose Dataset\\Sorted yoochoose-buys.dat";
+		String aggregatedClicksFileName = startDir
+				+ "\\data\\YooChoose Dataset\\Sorted Aggregated reduced1000th NO TIME.csv";
+		String aggregatedBuysFileName = startDir
+				+ "\\data\\YooChoose Dataset\\Sorted Aggregated buys NO TIME.dat";
+		String mergedFileName = startDir
+				+ "\\data\\YooChoose Dataset\\Sorted Aggregated merged1000th NO TIME.csv";
+//		processData.reduceDataset(1000);
+//		 processData.sortFile(clicksFileName);
+//		 processData.sortFile(buysFileName);	
+//		 processData.aggregateClicks(sortedClicksFileName, aggregatedClicksFileName);
+		// processData.aggregateBuys(sortedBuysFileName, aggregatedBuysFileName);
+//		 processData.joinDatasets(aggregatedClicksFileName, aggregatedBuysFileName, mergedFileName);
+		 String ratedFileName = processData.convertToRatings(mergedFileName);
+
+		// processData.aggregateBuys();
+
+		// processData.reduceDataset();
+
+		// processData.aggregateClicks();
+
+		// processData.joinDatasets();
+
+		// getIntersectionClickBuySession();
+
+		// ---------------------------------
+
+		// DataModel model = new FileDataModel(new File(ratedFileName));
+		// UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
+		// UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.2,
+		// similarity, model);
+		// UserBasedRecommender recommender = new GenericUserBasedRecommender(
+		// model, neighborhood, similarity);
+		// FileInputStream ratedFile = new FileInputStream(new
+		// File(ratedFileName));
+		// BufferedReader ratedFileReader = new BufferedReader(
+		// new InputStreamReader(ratedFile));
+		//
+		// String line = ratedFileReader.readLine();
+		//
+		// while (line != null) {
+		// List<RecommendedItem> recommendations = recommender.recommend(
+		// Integer.parseInt(line.split(",")[0]), 1);
+		// for (RecommendedItem recommendation : recommendations) {
+		// System.out.println("Recommendation for " + line.split(",")[0]
+		// + ":" + recommendation);
+		// }
+		//
+		// line = ratedFileReader.readLine();
+		// }
+	}
 }

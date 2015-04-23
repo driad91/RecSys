@@ -5,7 +5,7 @@ class ratingAlgorithm {
 	private static final int weightClicks = 1;
 	private static final int weightBuys = 5;
 
-	// clicks are rated 1, buys are rated 5, total sum is returned
+	//total sum is returned
 	public static float algorithm1(int clicks, int buys, int amountClicksBuys) {
 
 		float rating = clicks * weightClicks + buys * weightBuys;

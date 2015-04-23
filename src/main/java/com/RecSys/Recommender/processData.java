@@ -18,18 +18,19 @@ import java.util.Comparator;
 
 public class processData {
  static 	String startDir = System.getProperty("user.dir");
-	public static void reduceDataset () throws Exception {
 
-		/* to create a dataset that contains every xth session 
-			--> change string reduced file name
-			--> change line 37 (if counter != x)
-			--> change line 45 (if counter == x)
+ /**
+  * creates a dataset that contains every xth session of the original clicks dataset. 
+  * @param reduction determines in which intervall a session should be kept in the file
+  * @return the path of the reduced file
+  * @throws Exception
+  */
+ public static String reduceDataset (int reduction) throws Exception {
+
 		
-		
-		*/
-		
-		String clickFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\yoochoose-clicks.dat";
-		String reducedFileName= "C:\\Users\\Robert\\Documents\\Studium\\Master\\Hiwi\\ProcessedDatasets\\reduced10th.dat";
+		String clickFileName= "C:\\Users\\rober_000\\Documents\\yoochoose-clicks.dat";
+		String reducedFileName= startDir
+				+ "\\data\\YooChoose Dataset\\reduced" + reduction + "th.csv";
 		String lastSession = ""; 
 		
 		
@@ -46,14 +47,14 @@ public class processData {
 			String[] tempClickArr=tempClick.split(",");		
 
 			if (!lastSession.equals(tempClickArr[0])){
-				if (counter!=10){
+				if (counter!=reduction){
 					counter++;
 				}else{
 					counter=0;
 				}
 			}
 
-			if (counter==10){						
+			if (counter==reduction){						
 				reducedFile.println(tempClickArr[0] + "," + tempClickArr[1] + "," + tempClickArr[2] + "," + tempClickArr[3]);
 			}
 			
@@ -62,7 +63,8 @@ public class processData {
 		}
 		brClick.close();
 		reducedFile.close();
-		
+	
+		return reducedFileName;
 	}
 	
 	/**
@@ -149,7 +151,7 @@ public class processData {
 	{
 		
 		int noOfRows=getNoOfRows(filePath);
-		String [][] arrayFile=new String[noOfRows][5];
+		String [][] arrayFile=new String[noOfRows][4];
     	
 	    
     	
@@ -231,7 +233,7 @@ public class processData {
 	
 		for (int i=0;i<arrayFile.length;i++)
 		{
-		   sortedFile.println(arrayFile[i][0]+","+arrayFile[i][1]+","+arrayFile[i][2]+"," +arrayFile[i][3] + "," +arrayFile[i][4]);
+		   sortedFile.println(arrayFile[i][0]+","+arrayFile[i][1]+","+arrayFile[i][2]+"," +arrayFile[i][3]);
 		   
 		}
 	
