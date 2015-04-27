@@ -21,6 +21,8 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
  * Hello world!
  *
  */
+
+// comments test github
 public class App {
 
 	@SuppressWarnings("null")
