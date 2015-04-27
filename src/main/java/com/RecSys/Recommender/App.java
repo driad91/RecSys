@@ -142,6 +142,8 @@ public class App {
 				+ "\\data\\YooChoose Dataset\\Sorted Aggregated merged1000th NO TIME.csv";
 		String ratedFileName =  startDir
 				+ "\\data\\YooChoose Dataset\\Rated Sorted Aggregated merged1000th NO TIME.csv";
+		String recommendationsFileName =  startDir
+				+ "\\data\\YooChoose Dataset\\Recommendations Rated Sorted Aggregated merged1000th NO TIME.csv";
 		
 		//		processData.reduceDataset(1000);
 //		 processData.sortFile(clicksFileName);
@@ -166,8 +168,13 @@ public class App {
  
 //		 MyRecommender.printRecommendations (ratedFileName); 
 		 
-		 double accuracy = MyRecommender.evaluateRecommender(ratedFileName);
-		 System.out.println(accuracy);
+		MyRecommender recommender = new MyRecommender(ratedFileName, mergedFileName);
+		
+		recommender.evaluateRecommendationsFile(recommendationsFileName);
+		
+		
+//		double accuracy = recommender.evaluateRecommender();
+//		 System.out.println(accuracy);
 		 
 	}
 }
